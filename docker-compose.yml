@@ -15,4 +15,4 @@ services:
     volumes:
       - .:/app
     ports:
-      - "${HOST_ADDRESS}:3306"
+      - "${MYSQL_PORT}:3306"
