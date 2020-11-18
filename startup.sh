@@ -3,6 +3,7 @@
 if [ ! -d "/run/mysqld" ]; then
   mkdir -p /run/mysqld
 fi
+echo "3306" > /run/mysqld/mysqld.sock
 
 if [ -d /app/mysql ]; then
   echo "[i] MySQL directory already present, skipping creation"
