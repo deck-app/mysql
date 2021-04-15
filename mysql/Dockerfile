@@ -1,17 +1,34 @@
-FROM alpine:3.4
-LABEL MAINTAINER Naba Das <hello@get-deck.com>
+FROM yobasystems/alpine:3.12.0-amd64
 
-WORKDIR /app
-VOLUME /app
+ARG BUILD_DATE
+ARG VCS_REF
 
-RUN apk add --update mysql mysql-client && rm -f /var/cache/apk/*
-RUN apk update
-RUN apk add bash
+LABEL maintainer="Dominic Taylor <dominic@yobasystems.co.uk>" \
+    architecture="amd64/x86_64" \
+    mariadb-version="10.4.15" \
+    alpine-version="3.12.0" \
+    build="14-Oct-2020" \
+    org.opencontainers.image.title="alpine-mariadb" \
+    org.opencontainers.image.description="MariaDB Docker image running on Alpine Linux" \
+    org.opencontainers.image.authors="Dominic Taylor <dominic@yobasystems.co.uk>" \
+    org.opencontainers.image.vendor="Yoba Systems" \
+    org.opencontainers.image.version="v10.4.15" \
+    org.opencontainers.image.url="https://hub.docker.com/r/yobasystems/alpine-mariadb/" \
+    org.opencontainers.image.source="https://github.com/yobasystems/alpine-mariadb" \
+    org.opencontainers.image.revision=$VCS_REF \
+    org.opencontainers.image.created=$BUILD_DATE
 
-# These lines moved to the end allow us to rebuild image quickly after only these files were modified.
-COPY startup.sh /startup.sh
-RUN chmod +x /startup.sh
-COPY my.cnf /etc/mysql/my.cnf
+RUN apk add --no-cache mariadb mariadb-client mariadb-server-utils pwgen bash && \
+    rm -f /var/cache/apk/*
+
+ADD run.sh /scripts/run.sh
+RUN mkdir /docker-entrypoint-initdb.d && \
+    mkdir /scripts/pre-exec.d && \
+    mkdir /scripts/pre-init.d && \
+    chmod -R 755 /scripts
 
 EXPOSE 3306
-CMD ["/startup.sh"]
+
+VOLUME ["/var/lib/mysql"]
+
+ENTRYPOINT ["/scripts/run.sh"]
