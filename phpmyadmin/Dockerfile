@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM --platform=linux/x86_64 alpine:3.12
 MAINTAINER Peter Leitzen <peter@leitzen.de>
 
 ENV RELEASE_DATE 2021-02-13
