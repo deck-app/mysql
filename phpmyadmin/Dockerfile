@@ -1,2 +1,1 @@
-FROM --platform=linux/x86_64 phpmyadmin/phpmyadmin
-LABEL maintainer Naba Das <hello@get-deck.com>
+FROM --platform=linux/x86_64 deckapp/phpmyadmin:v4.9.7
