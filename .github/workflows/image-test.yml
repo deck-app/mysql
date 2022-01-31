@@ -1,0 +1,24 @@
+name: MySql
+
+on:
+  schedule:
+  - cron:  '30 5,17 * * *'
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image Mysql
+      run: docker-compose -f "docker-compose.yml" up -d --build
+    - name: Mysql Login
+      run:  mysql -h mysql -u root -p password
+    - name: Show Databe
+      run: mysql -h mysql -u root -p password && SHOW DATABASES;
