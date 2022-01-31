@@ -15,7 +15,7 @@ Also see the ["Getting Help with Mysql" article on the Mysql Knowledge Base](htt
 -	**Where to file issues**:  
 	Issues can be filed on [https://github.com/deck-app/](https://github.com/deck-app/mysql/issues) "Docker compose" Component, or on [GitHub](https://github.com/deck-app/mysql/issues)
 
--	**Supported architectures**: ([more info](https://github.com/docker-library/official-images support only amd64))  
+-	**Supported architectures**: ([more info](https://github.com/docker-library/mysql support only amd64))  
 	[`amd64`](https://hub.docker.com/r/amd64/mysql/),
 
 # What is Mysql?
