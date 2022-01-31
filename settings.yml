@@ -29,18 +29,18 @@ user:
   #     Check to On/Off display error
   #   target:
   #     DISPLAY_PHPERROR
-  # mysql_version:
-  #   label:
-  #     MySQL version
-  #   hint:
-  #     Select MySQL version
-  #   type:
-  #     select
-  #   values:
-  #     - "5.0"
-  #     - "7.0"
-  #   target:
-  #     MYSQL_VERSION
+  mysql_version:
+    label:
+      MySQL version
+    hint:
+      Select MySQL version
+    type:
+      select
+    values:
+      - 5.7
+      - 8
+    target:
+      MYSQL_VERSION
 
   # customize_server_root_path:
   #   label:
