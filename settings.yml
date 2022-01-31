@@ -1,34 +1,5 @@
 #User defined
 user:
-  # php_version:
-  #   label:
-  #     PHP version
-  #   hint:
-  #     Select a PHP version from the list above
-  #   type:
-  #     select
-  #   values:
-  #     - 5.6
-  #     - 7.0
-  #     - 7.1
-  #     - 7.2
-  #     - 7.3
-  #     - 7.4
-  #   target:
-  #     PHP_VERSION
-
-  # install_PHPERROR:
-  #   label:
-  #     Install PHPERROR?
-  #   type:
-  #     select
-  #   values:
-  #     - On
-  #     - Off
-  #   hint:
-  #     Check to On/Off display error
-  #   target:
-  #     DISPLAY_PHPERROR
   mysql_version:
     label:
       MySQL version
