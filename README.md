@@ -49,7 +49,7 @@ $ cd mysql
 $ docker-compose up -d
 
 ```
-### Edit `.env` file to change any settings before installing like mysql user name, password versions etc.
+### Edit `.env` file to change any settings before installing like mysql user name, password etc.
 ```console
 docker-compose up -d
 ```
