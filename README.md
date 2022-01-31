@@ -39,7 +39,7 @@ The following command starts `mysql` command line client against your original `
 
 ```console
 $ mysql -h mysql_hostname -u example-user -p
-mysql [(none)]> SELECT VERSION();
+mysql [(none)]> SHOW DATABASES;
 ```
 
 ## From terminal with Docker
