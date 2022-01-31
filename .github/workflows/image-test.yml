@@ -19,6 +19,4 @@ jobs:
     - name: Build the Docker image Mysql
       run: docker-compose -f "docker-compose.yml" up -d --build
     - name: Mysql Login
-      run:  mysql -u root -p 'password'
-    - name: Show Databe
-      run: mysql -u root -p 'password' && SHOW DATABASES;
+      run: docker exec -i mysql -uroot  -proot  db_1 < ./testDatabase.sql
