@@ -18,5 +18,17 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image Mysql
       run: docker-compose -f "docker-compose.yml" up -d --build
-    - name: Mysql Login
-      run: docker exec -i mysql mysql -uroot  -ppassword  test < ./testDatabase.sql
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+      ports:
+        - 3306
+      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Verify MySQL connection from host
+        run:  |
+          apt-get update && apt-get install -y mysql-client
+          mysql --host mysql -uadmin -ppassword -e "SHOW DATABASES"
+
