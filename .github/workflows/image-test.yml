@@ -25,7 +25,8 @@ jobs:
         DB_NAME:  test
         MYSQL_VERSION: "5.7"
     - name: Verify MySQL connection from host
-      run: mysql -uroot -p{{env.DB_ROOT_PASSWORD}} -e 'SELECT version()'
+      run:  docker-compose ps
+      # run: mysql -uroot -p{{env.DB_ROOT_PASSWORD}} -e 'SELECT version()'
       # run:  |
       #     sudo apt-get update && sudo apt-get install -y mysql-client
       #     mysql --host mysql_1 -uadmin -ppassword -e "SHOW DATABASES"
