@@ -26,13 +26,11 @@ jobs:
         MYSQL_VERSION: "5.7"
     - name: Verify MySQL container
       run:  docker-compose ps
-    - name: Verify MySQL running from host
+    - name: Verify MySQL running from host, create Database and show Database
       run: |
         sleep 30s
         docker exec mysql_mysql_1 ls -la /var/run/mysqld
-    - name: Verify MySQL database from user
-      run:  docker exec mysql_mysql_1 -uadmin -ppassword -e "SHOW DATABASES"
-    - name: Create a Database
-      run:  docker exec mysql_mysql_1 -uroot -ppassword -e "CREATE DATABASE deck"
-    - name: Verify Database create or not
-      run:  docker exec mysql_mysql_1 -uroot -ppassword -e "SHOW DATABASES"
+        docker exec mysql_mysql_1 -uadmin -ppassword -e "SHOW DATABASES"
+        docker exec mysql_mysql_1 -uroot -ppassword -e "CREATE DATABASE deck"
+        docker exec mysql_mysql_1 -uroot -ppassword -e "SHOW DATABASES"
+    
