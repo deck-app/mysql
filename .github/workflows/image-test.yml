@@ -31,7 +31,7 @@ jobs:
     - name: Show Database
       run: |
         sudo apt-get update && sudo apt-get install -y mariadb-client
-        mysql -uroot -hmysql -ppassword -e "SHOW DATABASES";
+        mysql -uroot -hmysql_1 -ppassword -e "SHOW DATABASES";
       # run: mysql -uroot -p{{env.DB_ROOT_PASSWORD}} -e 'SELECT version()'
       # run:  |
       #     sudo apt-get update && sudo apt-get install -y mysql-client
