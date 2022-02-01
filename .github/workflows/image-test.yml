@@ -30,8 +30,7 @@ jobs:
     #   run:  docker-compose exec mysql sh
     - name: Show Database
       run: |
-        sudo apt-get update && sudo apt-get install -y mariadb-client
-        mysql -uroot -hmysql_1 -ppassword -e "SHOW DATABASES";
+        mysql -h127.0.0.1 -uroot -ppassword -e "SHOW DATABASES";
       # run: mysql -uroot -p{{env.DB_ROOT_PASSWORD}} -e 'SELECT version()'
       # run:  |
       #     sudo apt-get update && sudo apt-get install -y mysql-client
