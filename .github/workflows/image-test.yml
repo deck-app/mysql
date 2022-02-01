@@ -23,8 +23,6 @@ jobs:
         DB_PASSWORD: password
         DB_USER: admin
         DB_NAME:  test
-      ports:
-        - 3306
     - name: Verify MySQL connection from host
       run:  |
           apt-get update && apt-get install -y mysql-client
