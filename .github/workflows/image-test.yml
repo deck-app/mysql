@@ -26,7 +26,7 @@ jobs:
         MYSQL_VERSION: "5.7"
         HOSTNAME: mysql
     - name: Verify MySQL connection from host
-      run: mysql -uroot -h{{env.HOSTNAME}} -p{{env.DB_ROOT_PASSWORD}} -e 'SELECT version()'
+      run: mysql -uroot -h127.0.0.1 -p{{env.DB_ROOT_PASSWORD}} -e 'SELECT version()'
       # run:  |
       #     sudo apt-get update && sudo apt-get install -y mysql-client
       #     mysql --host mysql_1 -uadmin -ppassword -e "SHOW DATABASES"
