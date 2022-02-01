@@ -25,6 +25,6 @@ jobs:
         DB_NAME:  test
     - name: Verify MySQL connection from host
       run:  |
-          apt-get update && apt-get install -y mysql-client
+          sudo apt-get update && sudo apt-get install -y mysql-client
           mysql --host mysql_1 -uadmin -ppassword -e "SHOW DATABASES"
 
