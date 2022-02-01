@@ -24,7 +24,10 @@ jobs:
         DB_USER: admin
         DB_NAME:  test
     - name: Verify MySQL connection from host
-      run: mysql -uadmin -ppassword -e "SHOW DATABASES"
+      run: |
+        sudo /etc/init.d/mysql start
+        mysql -uadmin -ppassword -e "SHOW DATABASES"
+        mysql -e 'CREATE DATABASE demo;' -uroot -p${{ env.DB_ROOT_PASSWORD }}
       # run:  |
       #     sudo apt-get update && sudo apt-get install -y mysql-client
       #     mysql --host mysql_1 -uadmin -ppassword -e "SHOW DATABASES"
