@@ -14,9 +14,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
+    steps1:
     - uses: actions/checkout@v2
-    - name: Build the Docker image Mysql
+    - name: Build the Docker image Mysql 5.7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
         DB_ROOT_PASSWORD: password
@@ -36,3 +36,28 @@ jobs:
       run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deck"
     - name: Verify Database create or not
       run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    
+    steps2:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image Mysql 8.0
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "8.0"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deck"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+
+    
