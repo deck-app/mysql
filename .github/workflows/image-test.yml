@@ -23,9 +23,9 @@ jobs:
         DB_PASSWORD: password
         DB_USER: admin
         DB_NAME:  test
+        MYSQL_VERSION: "5.7"
     - name: Verify MySQL connection from host
       run: |
-        sudo /etc/init.d/mysql start
         mysql -uadmin -ppassword -e "SHOW DATABASES"
         mysql -e 'CREATE DATABASE demo;' -uroot -p${{ env.DB_ROOT_PASSWORD }}
       # run:  |
