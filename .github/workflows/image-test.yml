@@ -25,7 +25,6 @@ jobs:
         DB_NAME:  test
       ports:
         - 3306
-      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     - name: Verify MySQL connection from host
       run:  |
           apt-get update && apt-get install -y mysql-client
