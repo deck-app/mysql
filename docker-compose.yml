@@ -1,8 +1,7 @@
 version: '3'
 services:
   mysql:
-    image: mysql:${MYSQL_VERSION}
-    command: --default-authentication-plugin=mysql_native_password
+    image: ghcr.io/deck-app/mysql:${MYSQL_VERSION}
     environment:
       - 'MYSQL_DATABASE=${DB_NAME}'
       - 'MYSQL_USER=${DB_USER}'
@@ -14,8 +13,9 @@ services:
       - ${MYSQL_PORT}:3306
 
   phpmyadmin:
-    image: deckapp/phpmyadmin:v4.9.7
+    image: ghcr.io/deck-app/phpmyadmin:v4.9
     environment:
+      - 'PMA_ARBITRARY=1'
       - 'MYSQL_USER=${DB_USER}'
       - 'MYSQL_PASSWORD=${DB_PASSWORD}'
       - 'MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}'
