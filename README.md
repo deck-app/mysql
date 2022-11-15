@@ -15,9 +15,6 @@ Also see the ["Getting Help with Mysql" article on the Mysql Knowledge Base](htt
 -	**Where to file issues**:  
 	Issues can be filed on [https://github.com/deck-app/](https://github.com/deck-app/mysql/issues) "Docker compose" Component, or on [GitHub](https://github.com/deck-app/mysql/issues)
 
--	**Supported architectures**: ([more info](https://github.com/docker-library/mysql support only amd64))  
-	[`amd64`](https://hub.docker.com/r/amd64/mysql/),
-
 # What is Mysql?
 
 MySQL is the world's most popular open source database. With its proven performance, reliability and ease-of-use, MySQL has become the leading database choice for web-based applications, covering the entire range from personal projects and websites, via e-commerce and information services, all the way to high profile web properties including Facebook, Twitter, YouTube, Yahoo! and many more.

@@ -9,11 +9,8 @@ on:
     branches: [ master ]
 
 jobs:
-
-  build:
-
+  Mysql57-AMD64
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image Mysql 5.7
@@ -41,8 +38,46 @@ jobs:
     - name: Docker Image Down and data deleted
       run:  |
         docker-compose -f "docker-compose.yml" down
-        sudo rm -rf /tmp/mysql
-    
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+  Mysql57-ARM64
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image Mysql 5.7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "5.7"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+  
+  Mysql80-AMD64
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - name: Build the Docker image Mysql 8.0
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -68,6 +103,40 @@ jobs:
     - name: Docker Image Down and data deleted
       run:  |
         docker-compose -f "docker-compose.yml" down
-        sudo rm -rf /tmp/mysql
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+  Mysql80-ARM64
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image Mysql 8.0
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "8.0"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
 
     
