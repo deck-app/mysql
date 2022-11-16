@@ -13,7 +13,7 @@ services:
       - ${MYSQL_PORT}:3306
 
   phpmyadmin:
-    image: ghcr.io/deck-app/phpmyadmin:5.2
+    image: ghcr.io/deck-app/phpmyadmin:5
     environment:
       - 'PMA_ARBITRARY=1'
       - 'MYSQL_USER=${DB_USER}'
