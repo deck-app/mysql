@@ -9,7 +9,7 @@ user:
       select
     values:
       - 5.7
-      - "8.0"
+      - 8
     target:
       MYSQL_VERSION
 
