@@ -1,4 +1,4 @@
-name: MySql
+name: Docker Image CI
 
 on:
   push:
