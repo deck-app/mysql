@@ -2,7 +2,7 @@ name: MySql
 
 on:
   schedule:
-  - cron:  '30 4 * * *'
+  - cron:  '31 08 * * *'
   push:
     branches: [ master ]
   pull_request:
