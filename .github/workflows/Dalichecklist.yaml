@@ -1,0 +1,212 @@
+name: MySql 
+
+on:
+  schedule:
+  - cron:  '30 01 * * *'
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  MySQL57-AMD64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image MySQL 5.7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "5.7"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: github_action_status
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content MySQL 5.7 AMD64 :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  MySQL57-ARM64:
+    runs-on: ubuntu-22.04
+    name: MySQL57-ARM64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: uraimo/run-on-arch-action@v2
+      name: Run commands
+      id: runcmd
+      with:
+        arch: aarch64
+        distro: ubuntu22.04
+        run: |
+          uname -a
+          echo ::set-output name=uname::$(uname -a)
+
+    - name: Get the output
+      run: |
+        echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+    - name: Build the Docker image MySQL 5.7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "5.7"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: github_action_status
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content MySQL 5.7 ARM64 :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  
+  MySQL80-AMD64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image MySQL 8.0
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "8.0"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: github_action_status
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content MySQL 8.0 AMD64 :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  MySQL80-ARM64:
+    runs-on: ubuntu-22.04
+    name: MySQL80-ARM64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: uraimo/run-on-arch-action@v2
+      name: Run commands
+      id: runcmd
+      with:
+        arch: aarch64
+        distro: ubuntu22.04
+        run: |
+          uname -a
+          echo ::set-output name=uname::$(uname -a)
+
+    - name: Get the output
+      run: |
+        echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+    - name: Build the Docker image MySQL 8.0
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "8.0"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: github_action_status
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content MySQL 8.0 ARM64 :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
