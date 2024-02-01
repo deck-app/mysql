@@ -58,6 +58,7 @@ jobs:
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
         mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
     - name: Notify on FAIL
@@ -71,6 +72,7 @@ jobs:
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
         mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
   MySQL57-ARM64:
@@ -136,6 +138,7 @@ jobs:
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
         mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
     - name: Notify on FAIL
@@ -149,6 +152,7 @@ jobs:
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
         mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
   
@@ -201,6 +205,7 @@ jobs:
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
         mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
     - name: Notify on FAIL
@@ -214,6 +219,7 @@ jobs:
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
         mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
   MySQL80-ARM64:
@@ -279,6 +285,7 @@ jobs:
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
         mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
     - name: Notify on FAIL
@@ -292,5 +299,6 @@ jobs:
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
         mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
