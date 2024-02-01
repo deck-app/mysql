@@ -46,7 +46,6 @@ jobs:
         ENV_TEST: ${{ secrets.ENV_TEST }}
       run: |
         echo "$ENV_TEST" > .env.test
-        echo "${{ toJson(github) }}"
       shell: bash
     - name: Notify on SUCCESS
       if: ${{ SUCCESS() }}
@@ -54,7 +53,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "*{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "*{workflow}* {status_message} in <{branch_url}|{default_branch}> run_id: {run_id}${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>" 
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
@@ -68,7 +67,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "*{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>"
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
@@ -134,7 +133,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>" 
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
@@ -148,7 +147,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>"
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
@@ -201,7 +200,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>" 
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
@@ -215,7 +214,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>"
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
@@ -281,7 +280,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>" 
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
@@ -295,7 +294,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}>"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{default_branch}> ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>"
         mention_users: "D056LFW47NF"
         mention_users_when: "failure,warnings"
