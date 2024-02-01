@@ -52,8 +52,8 @@ jobs:
       uses: ravsamhq/notify-slack-action@v2
       with:
         status: ${{ job.status }}
-        notification_title: "{workflow} has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> @${{ github.event.head_commit.author.name }}"
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "{emoji} *{workflow}* {status_message} in <{branch_url}|{branch}> <{https://github.com/nabad600}|@${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>" 
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
