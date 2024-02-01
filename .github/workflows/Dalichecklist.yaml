@@ -53,7 +53,7 @@ jobs:
       with:
         status: ${{ job.status }}
         notification_title: "{emoji} *{workflow}* has {status_message}"
-        message_format: "*{workflow}* {status_message} in <{branch_url}|{branch}> {job} {run_url} ${{ github.event.head_commit.author.name }}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
         footer: "Linked Repo <{repo_url}|{repo}>" 
         mention_users: "D056LFW47NF,"
         mention_users_when: "SUCCESS"
@@ -61,3 +61,244 @@ jobs:
         mention_groups_when: "SUCCESS"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
+    - name: Notify on FAIL
+      if: ${{ failure() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>"
+        mention_users: "D056LFW47NF"
+        mention_users_when: "failure,warnings"
+        mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
+  MySQL57-ARM64:
+    runs-on: ubuntu-22.04
+    name: MySQL57-ARM64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: uraimo/run-on-arch-action@v2
+      name: Run commands
+      id: runcmd
+      with:
+        arch: aarch64
+        distro: ubuntu22.04
+        run: |
+          uname -a
+          echo ::set-output name=uname::$(uname -a)
+
+    - name: Get the output
+      run: |
+        echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+    - name: Build the Docker image MySQL 5.7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "5.7"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Create ENV
+      env:
+        ENV_TEST: ${{ secrets.ENV_TEST }}
+      run: |
+        echo "$ENV_TEST" > .env.test
+      shell: bash
+    - name: Notify on SUCCESS
+      if: ${{ SUCCESS() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>" 
+        mention_users: "D056LFW47NF,"
+        mention_users_when: "SUCCESS"
+        mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
+    - name: Notify on FAIL
+      if: ${{ failure() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>"
+        mention_users: "D056LFW47NF"
+        mention_users_when: "failure,warnings"
+        mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
+  
+  MySQL80-AMD64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image MySQL 8.0
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "8.0"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Create ENV
+      env:
+        ENV_TEST: ${{ secrets.ENV_TEST }}
+      run: |
+        echo "$ENV_TEST" > .env.test
+      shell: bash
+    - name: Notify on SUCCESS
+      if: ${{ SUCCESS() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>" 
+        mention_users: "D056LFW47NF,"
+        mention_users_when: "SUCCESS"
+        mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
+    - name: Notify on FAIL
+      if: ${{ failure() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>"
+        mention_users: "D056LFW47NF"
+        mention_users_when: "failure,warnings"
+        mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
+  MySQL80-ARM64:
+    runs-on: ubuntu-22.04
+    name: MySQL80-ARM64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: uraimo/run-on-arch-action@v2
+      name: Run commands
+      id: runcmd
+      with:
+        arch: aarch64
+        distro: ubuntu22.04
+        run: |
+          uname -a
+          echo ::set-output name=uname::$(uname -a)
+
+    - name: Get the output
+      run: |
+        echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+    - name: Build the Docker image MySQL 8.0
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        DB_ROOT_PASSWORD: password
+        DB_PASSWORD: password
+        DB_USER: admin
+        DB_NAME:  test
+        MYSQL_VERSION: "8.0"
+    - name: Verify MySQL container
+      run:  docker-compose ps
+    - name: Verify MySQL running from host, create Database and show Database
+      run: |
+        sleep 30s
+        docker exec mysql_mysql_1 ls -la /var/run/mysqld
+    - name: Check MySQL version
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW VARIABLES LIKE '%version%';"
+    - name: Verify MySQL database from user
+      run:  docker exec mysql_mysql_1 mysql -uadmin -ppassword -e "SHOW DATABASES"
+    - name: Create a Database
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "CREATE DATABASE deckapp"
+    - name: Verify Database create or not
+      run:  docker exec mysql_mysql_1 mysql -uroot -ppassword -e "SHOW DATABASES"
+    - name: Docker Image Down and data deleted
+      run:  |
+        docker-compose -f "docker-compose.yml" down
+        echo "y" | docker system prune -a
+        echo "y" | docker volume prune
+        sudo rm -rf /tmp/*
+    - name: Create ENV
+      env:
+        ENV_TEST: ${{ secrets.ENV_TEST }}
+      run: |
+        echo "$ENV_TEST" > .env.test
+      shell: bash
+    - name: Notify on SUCCESS
+      if: ${{ SUCCESS() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>" 
+        mention_users: "D056LFW47NF,"
+        mention_users_when: "SUCCESS"
+        mention_groups: "C06H0SB11JL"
+        mention_groups_when: "SUCCESS"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
+    - name: Notify on FAIL
+      if: ${{ failure() }}
+      uses: ravsamhq/notify-slack-action@v2
+      with:
+        status: ${{ job.status }}
+        notification_title: "{emoji} *{workflow}* has {status_message}"
+        message_format: "<{workflow_url}|*{workflow}*> {status_message} in <{branch_url}|{branch}> <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+        footer: "Linked Repo <{repo_url}|{repo}>"
+        mention_users: "D056LFW47NF"
+        mention_users_when: "failure,warnings"
+        mention_groups: "C06G95T1YH3"
+        mention_groups_when: "failure,warnings"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
